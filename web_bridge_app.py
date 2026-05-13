@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-import subprocess
+import asyncio
 import sys
 from pathlib import Path
 
@@ -36,17 +36,19 @@ async def run_script(message: str = Form(...)) -> JSONResponse:
     if not script.exists():
         raise HTTPException(status_code=500, detail="worker_script.py não encontrado")
 
-    proc = subprocess.run(
-        [sys.executable, str(script), message],
-        capture_output=True,
-        text=True,
-        check=False,
+    proc = await asyncio.create_subprocess_exec(
+        sys.executable,
+        str(script),
+        message,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
     )
+    stdout, stderr = await proc.communicate()
 
     payload = {
         "returncode": proc.returncode,
-        "stdout": proc.stdout.strip(),
-        "stderr": proc.stderr.strip(),
+        "stdout": stdout.decode().strip(),
+        "stderr": stderr.decode().strip(),
     }
     return JSONResponse(payload)
 

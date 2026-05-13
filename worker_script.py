@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 def main() -> None:
@@ -11,7 +11,7 @@ def main() -> None:
         json.dumps(
             {
                 "message": message,
-                "processed_at": datetime.now(UTC).isoformat(),
+                "processed_at": datetime.now(timezone.utc).isoformat(),
                 "status": "processed",
             },
             ensure_ascii=False,
