@@ -1,0 +1,21 @@
+version: "v1"
+registry:
+  - claim_id: "C-FOUNDATION-001"
+    module: "foundation_program"
+    canonical_function: "sets scientific and admissibility invariants"
+    evidence_required:
+      - RAW_EVIDENCE_MANIFEST.json
+  - claim_id: "C-TAXONOMY-001"
+    module: "taxonomy_operational_v32"
+    canonical_function: "defines topology of modules/gates"
+    evidence_required:
+      - matverse_corpus_graph.schema.json
+  - claim_id: "C-SXS-001"
+    module: "omega_sxs_gate"
+    canonical_function: "system-vs-system final validation"
+    evidence_required:
+      - SYSTEM_X_SYSTEM_RUN.jsonl
+      - MATVERSE_VALIDATION_LEDGER.jsonl
+      - MATEVSRE_AUTOATTACK_LEDGER.jsonl
+      - REPLAY_LOG.json
+      - FINAL_OMEGA_GATE_REPORT.md

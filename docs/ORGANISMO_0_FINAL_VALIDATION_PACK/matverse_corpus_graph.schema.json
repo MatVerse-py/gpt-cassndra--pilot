@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matverse.org/schema/matverse_corpus_graph.v1.json",
+  "title": "MatVerse Corpus Governed Graph",
+  "type": "object",
+  "required": ["version", "nodes", "edges", "gate"],
+  "properties": {
+    "version": {"type": "string"},
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "status"],
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {"enum": ["claim", "module", "evidence", "gate", "diagnostic"]},
+          "status": {"enum": ["PASS", "HOLD", "BLOCK", "QUARANTINE"]}
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "relation"],
+        "properties": {
+          "from": {"type": "string"},
+          "to": {"type": "string"},
+          "relation": {"enum": ["supports", "depends_on", "validated_by", "blocked_by", "derived_from"]}
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": ["name", "equation", "decision"],
+      "properties": {
+        "name": {"type": "string", "const": "Ω-SxS-GATE"},
+        "equation": {"type": "string"},
+        "decision": {"enum": ["PASS", "HOLD", "BLOCK"]}
+      }
+    }
+  }
+}
