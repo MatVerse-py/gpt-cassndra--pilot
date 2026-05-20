@@ -1,0 +1,27 @@
+{
+  "vector_id": "cassandra_substrato_pass",
+  "source_upload": {
+    "uploaded_name": "Understanding Cassandra Matverse Uploaded File Content.zip",
+    "sha256": "f91502bb91c424fcef886e6fc51104587a2d464f2c752c41c4b8971cf6b63c1e"
+  },
+  "source_file": "omega_gate_output_substrato.json",
+  "metric_encoding": "integer_milli_units_0_to_1000",
+  "metrics_float": {
+    "Psi": 0.885,
+    "Theta_Hat": 0.790,
+    "CVaR": 0.045,
+    "PoLE": 1.000
+  },
+  "metrics_milli": {
+    "psi_m": 885,
+    "theta_m": 790,
+    "cvar_m": 45,
+    "pole_m": 1000
+  },
+  "expected": {
+    "omega_m": 882,
+    "decision": "PASS"
+  },
+  "status": "PASS_LOCAL_TEST_VECTOR",
+  "epistemic_boundary": "This vector is derived from uploaded Cassandra/MatVerse material. It is a deterministic test vector, not independent scientific validation."
+}

@@ -1,0 +1,100 @@
+{
+  "manifest_id": "gthdl_on_ghdl_uploaded_source_manifest",
+  "uploaded_name": "Understanding Cassandra Matverse Uploaded File Content.zip",
+  "zip_sha256": "f91502bb91c424fcef886e6fc51104587a2d464f2c752c41c4b8971cf6b63c1e",
+  "file_count": 18,
+  "selected_source": "omega_gate_output_substrato.json",
+  "files": [
+    {
+      "path": "Relatório CASSANDRA / Ω-GATE (MatVerse v9.0) - Cirurgia Epistemológica Final.md",
+      "bytes": 14000,
+      "sha256": "2fb5610c22e280deb5fef8b7463e55630d08637651ba4fdc2c288ce169d888e9"
+    },
+    {
+      "path": "Relatório CASSANDRA / Ω-GATE (MatVerse v9.0) - Refinado.md",
+      "bytes": 14357,
+      "sha256": "b4b463d89910915eae04272f4f44aea950bd9e7b00362d27fbe85f9821c4bace"
+    },
+    {
+      "path": "Relatório CASSANDRA / Ω-GATE (MatVerse v9.0) - Substrato MatVerse e Camada de Persistência Canônica.md",
+      "bytes": 8380,
+      "sha256": "e7c25d04f837987a315e2a250ba2c835d736f5876006ebc4edcec96fa9ba3e7f"
+    },
+    {
+      "path": "Relatório CASSANDRA / Ω-GATE (MatVerse v9.0).md",
+      "bytes": 11685,
+      "sha256": "9d42b668c8ad4b97deaab966ded210952a57c0105487300da3d0d921b29a334b"
+    },
+    {
+      "path": "Roteiro de Apresentação: Análise CASSANDRA / Ω-GATE - Substrato MatVerse e Camada de Persistência Canônica.md",
+      "bytes": 5687,
+      "sha256": "fc28bc7219811fd72ac4d6e04562bc53f603bbd1095de297c4c44e869246e729"
+    },
+    {
+      "path": "Roteiro de Apresentação: Análise CASSANDRA / Ω-GATE do Projeto HELENA Eleitoral.md",
+      "bytes": 11121,
+      "sha256": "a59e8c5d0b8e27fdf9629ca921d2e80db605f868979d47a92eeb98d014942dd7"
+    },
+    {
+      "path": "cassandra_calc.py",
+      "bytes": 2696,
+      "sha256": "23719fb32759c0df1b3b0bbb965faab9085743a55f010b6df7487f0d545aa957"
+    },
+    {
+      "path": "cassandra_final_calc.py",
+      "bytes": 1937,
+      "sha256": "542937ba06065a409e7e428db1f787adbf2c092d5ae85e7ba0ff45d8ecaeef23"
+    },
+    {
+      "path": "cassandra_refined_calc.py",
+      "bytes": 1535,
+      "sha256": "3d3f0dcff9b8829b3cf3455f1eab178caab9f6b79bdfaa89302858429791e982"
+    },
+    {
+      "path": "cassandra_v3_calc.py",
+      "bytes": 1867,
+      "sha256": "ad5a4b3efbe0d9ff038d407865c98814d358cbde6c391fcb7bd5dc3022a3880f"
+    },
+    {
+      "path": "omega_gate_output.json",
+      "bytes": 1288,
+      "sha256": "7e0884456c1eb86e0e82e11f6d16f2c15458642f0146bc65e239a87ef376f3bf"
+    },
+    {
+      "path": "omega_gate_output_final.json",
+      "bytes": 1382,
+      "sha256": "e8777ff23c7e467c638ac1df04c41b33e07857844954ca4681b69c279d0f6521"
+    },
+    {
+      "path": "omega_gate_output_refined.json",
+      "bytes": 1373,
+      "sha256": "6e25540ac5f0bb692c9b53300be09c6a8b7be1bf53af3f1662ac064802bdc865"
+    },
+    {
+      "path": "omega_gate_output_substrato.json",
+      "bytes": 1477,
+      "sha256": "2c22c3f86e77975a903a0fd32585b2629a98b568dcece8735407144c1e237a9d"
+    },
+    {
+      "path": "pasted_content.txt",
+      "bytes": 11679,
+      "sha256": "740d239c9970abe22a7f8a30540f8d920f7d7188f444e0e6dd17355cf7058143"
+    },
+    {
+      "path": "pasted_content_2.txt",
+      "bytes": 8133,
+      "sha256": "098b603b440858ed5ffef5db67fb7fb474300ed0279565e0b998f38d03b564c8"
+    },
+    {
+      "path": "pasted_content_3.txt",
+      "bytes": 8803,
+      "sha256": "adfd765d6823e86e3578e9a5d3ba5f522176f476a87f5be487d0cf63db85c9fc"
+    },
+    {
+      "path": "pasted_content_4.txt",
+      "bytes": 29775,
+      "sha256": "e16b0d2841a2be50f1187d8ecfae2d4611fae73e2405252e6ef37e8f395b49ef"
+    }
+  ],
+  "boundary": "Hashes record source provenance of the uploaded bundle. They do not imply external validation."
+}
