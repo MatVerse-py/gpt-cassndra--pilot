@@ -1,0 +1,29 @@
+name: CIN Digital Trust Router CI
+
+on:
+  pull_request:
+    paths:
+      - 'captals/cin-digital-trust-router/**'
+  push:
+    paths:
+      - 'captals/cin-digital-trust-router/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: captals/cin-digital-trust-router
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        run: npm install
+      - name: Syntax check
+        run: npm run check
+      - name: Unit tests
+        run: npm test
