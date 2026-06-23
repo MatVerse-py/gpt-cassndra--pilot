@@ -72,19 +72,35 @@ export class TrustEngine {
 
   async verifyFederatedStatus({ auditToken, issuerState }) {
     const issuerTrusted = this.verifyIssuer(issuerState);
+    const tokenWellFormed = /^[a-f0-9]{64}$/i.test(auditToken);
 
-    if (this.mode !== 'sandbox') {
+    if (!issuerTrusted || !tokenWellFormed) {
       return {
-        status: 'HOLD',
-        source: 'official-connector-required',
+        status: 'INVALID',
+        gate: 'BLOCK',
+        reason: !issuerTrusted ? 'UNTRUSTED_ISSUER' : 'INVALID_AUDIT_TOKEN',
+        source: this.mode,
+        issuerTrusted,
+        signatureValid: false
+      };
+    }
+
+    if (this.mode === 'sandbox') {
+      return {
+        status: 'UNVERIFIED',
+        gate: 'HOLD',
+        reason: 'SANDBOX_NO_OFFICIAL_ASSURANCE',
+        source: 'sandbox',
         issuerTrusted,
         signatureValid: false
       };
     }
 
     return {
-      status: issuerTrusted && /^[a-f0-9]{64}$/i.test(auditToken) ? 'VALID' : 'INVALID',
-      source: 'sandbox',
+      status: 'UNVERIFIED',
+      gate: 'HOLD',
+      reason: 'OFFICIAL_CONNECTOR_REQUIRED',
+      source: 'official-connector-required',
       issuerTrusted,
       signatureValid: false
     };
