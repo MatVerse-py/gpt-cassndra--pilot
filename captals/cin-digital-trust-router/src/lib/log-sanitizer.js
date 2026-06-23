@@ -1,7 +1,7 @@
 const CPF_MASKED_REPLACE = /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g;
-const CPF_RAW_REPLACE = /(?<!\d)\d{11}(?!\d)/g;
+const CPF_RAW_REPLACE = /(?<![0-9a-fA-F])\d{11}(?![0-9a-fA-F])/g;
 const CPF_MASKED_DETECT = /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/;
-const CPF_RAW_DETECT = /(?<!\d)\d{11}(?!\d)/;
+const CPF_RAW_DETECT = /(?<![0-9a-fA-F])\d{11}(?![0-9a-fA-F])/;
 const FORBIDDEN_FIELD_NAMES = new Set([
   'cpf',
   'cpf_raw',
