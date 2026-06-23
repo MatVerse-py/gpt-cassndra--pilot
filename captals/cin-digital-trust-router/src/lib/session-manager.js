@@ -3,31 +3,47 @@ import Redis from 'ioredis';
 
 const DEFAULT_TTL_SECONDS = 900;
 
+export class SessionStoreUnavailableError extends Error {
+  constructor() {
+    super('SESSION_STORE_UNAVAILABLE');
+    this.name = 'SessionStoreUnavailableError';
+  }
+}
+
 class MemorySaltStore {
   constructor() {
     this.records = new Map();
   }
 
+  pruneExpired(now = Date.now()) {
+    for (const [sessionId, record] of this.records.entries()) {
+      if (record.expiresAt <= now) {
+        this.records.delete(sessionId);
+      }
+    }
+  }
+
   async set(sessionId, salt, ttlSeconds) {
-    const expiresAt = Date.now() + ttlSeconds * 1000;
-    this.records.set(sessionId, { salt, expiresAt });
+    this.pruneExpired();
+    this.records.set(sessionId, { salt, expiresAt: Date.now() + ttlSeconds * 1000 });
   }
 
   async consume(sessionId) {
+    this.pruneExpired();
     const record = this.records.get(sessionId);
     this.records.delete(sessionId);
-
-    if (!record || record.expiresAt < Date.now()) {
-      return null;
-    }
-
-    return record.salt;
+    return record?.salt ?? null;
   }
 }
 
 export class SessionManager {
-  constructor({ redisUrl, ttlSeconds = DEFAULT_TTL_SECONDS } = {}) {
+  constructor({
+    redisUrl,
+    ttlSeconds = DEFAULT_TTL_SECONDS,
+    allowMemoryFallback = process.env.NODE_ENV !== 'production'
+  } = {}) {
     this.ttlSeconds = ttlSeconds;
+    this.allowMemoryFallback = allowMemoryFallback;
     this.memoryStore = new MemorySaltStore();
     this.redis = null;
 
@@ -35,9 +51,18 @@ export class SessionManager {
       this.redis = new Redis(redisUrl, {
         lazyConnect: true,
         maxRetriesPerRequest: 1,
-        enableOfflineQueue: false
+        enableOfflineQueue: false,
+        connectTimeout: 2500
       });
     }
+  }
+
+  async #ensureRedisConnection() {
+    if (!this.redis) return false;
+    if (this.redis.status === 'wait') {
+      await this.redis.connect();
+    }
+    return this.redis.status === 'ready';
   }
 
   async createSession() {
@@ -46,15 +71,18 @@ export class SessionManager {
 
     if (this.redis) {
       try {
-        if (this.redis.status === 'wait') {
-          await this.redis.connect();
-        }
+        await this.#ensureRedisConnection();
         await this.redis.set(`cin:salt:${sessionId}`, salt, 'EX', this.ttlSeconds);
         return { sessionId, ttlSeconds: this.ttlSeconds, storage: 'redis' };
       } catch {
-        await this.memoryStore.set(sessionId, salt, this.ttlSeconds);
-        return { sessionId, ttlSeconds: this.ttlSeconds, storage: 'memory-fallback' };
+        if (!this.allowMemoryFallback) {
+          throw new SessionStoreUnavailableError();
+        }
       }
+    }
+
+    if (!this.allowMemoryFallback) {
+      throw new SessionStoreUnavailableError();
     }
 
     await this.memoryStore.set(sessionId, salt, this.ttlSeconds);
@@ -68,18 +96,17 @@ export class SessionManager {
 
     if (this.redis) {
       try {
-        if (this.redis.status === 'wait') {
-          await this.redis.connect();
-        }
-        const key = `cin:salt:${sessionId}`;
-        const salt = await this.redis.get(key);
-        if (salt) {
-          await this.redis.del(key);
-          return salt;
-        }
+        await this.#ensureRedisConnection();
+        return await this.redis.call('GETDEL', `cin:salt:${sessionId}`);
       } catch {
-        return this.memoryStore.consume(sessionId);
+        if (!this.allowMemoryFallback) {
+          throw new SessionStoreUnavailableError();
+        }
       }
+    }
+
+    if (!this.allowMemoryFallback) {
+      throw new SessionStoreUnavailableError();
     }
 
     return this.memoryStore.consume(sessionId);
