@@ -1,11 +1,13 @@
-const CPF_MASKED_PATTERN = /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g;
-const CPF_RAW_PATTERN = /(?<!\d)\d{11}(?!\d)/g;
+const CPF_MASKED_REPLACE = /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g;
+const CPF_RAW_REPLACE = /(?<!\d)\d{11}(?!\d)/g;
+const CPF_MASKED_DETECT = /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/;
+const CPF_RAW_DETECT = /(?<!\d)\d{11}(?!\d)/;
 
 export function sanitizeValue(value) {
   if (typeof value === 'string') {
     return value
-      .replace(CPF_MASKED_PATTERN, '***.***.***-**')
-      .replace(CPF_RAW_PATTERN, '***********');
+      .replace(CPF_MASKED_REPLACE, '***.***.***-**')
+      .replace(CPF_RAW_REPLACE, '***********');
   }
 
   if (Array.isArray(value)) {
@@ -23,7 +25,7 @@ export function sanitizeValue(value) {
 
 export function assertNoCpfPattern(payload) {
   const serialized = JSON.stringify(payload);
-  if (CPF_MASKED_PATTERN.test(serialized) || CPF_RAW_PATTERN.test(serialized)) {
+  if (CPF_MASKED_DETECT.test(serialized) || CPF_RAW_DETECT.test(serialized)) {
     throw new Error('SENSITIVE_IDENTIFIER_PATTERN_BLOCKED');
   }
 }
