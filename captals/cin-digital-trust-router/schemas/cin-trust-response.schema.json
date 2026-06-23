@@ -4,12 +4,17 @@
   "title": "CINTrustResponse",
   "type": "object",
   "additionalProperties": false,
-  "required": ["status", "issuer", "verification", "audit"],
+  "required": ["status", "gate", "reason", "issuer", "verification", "audit"],
   "properties": {
     "status": {
       "type": "string",
-      "enum": ["VALID", "INVALID", "EXPIRED", "REVOKED", "HOLD", "BLOCK", "ESCALATE"]
+      "enum": ["VALID", "INVALID", "EXPIRED", "REVOKED", "UNVERIFIED"]
     },
+    "gate": {
+      "type": "string",
+      "enum": ["PASS", "HOLD", "BLOCK", "ESCALATE"]
+    },
+    "reason": { "type": "string", "minLength": 3, "maxLength": 128 },
     "issuer": {
       "type": "object",
       "additionalProperties": false,
@@ -34,11 +39,12 @@
     "audit": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["audit_id", "transaction_id", "audit_token_hash", "recorded", "event_hash"],
+      "required": ["audit_id", "transaction_id", "audit_token_hash", "previous_event_hash", "recorded", "event_hash"],
       "properties": {
         "audit_id": { "type": "string", "format": "uuid" },
         "transaction_id": { "type": "string", "format": "uuid" },
         "audit_token_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "previous_event_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
         "recorded": { "type": "boolean" },
         "event_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
       }
