@@ -54,6 +54,7 @@ export class SessionManager {
         enableOfflineQueue: false,
         connectTimeout: 2500
       });
+      this.redis.on('error', () => undefined);
     }
   }
 
