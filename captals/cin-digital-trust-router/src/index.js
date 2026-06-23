@@ -37,6 +37,10 @@ function httpStatusForGate(gate) {
   return 400;
 }
 
+function isAuditFailure(error) {
+  return /^AUDIT_|^SENSITIVE_/.test(error?.message || '');
+}
+
 const config = loadConfig();
 const port = Number(process.env.PORT || config.port || 3001);
 const mode = process.env.TRUST_ROUTER_MODE || config.trust_router_mode || 'sandbox';
@@ -159,6 +163,15 @@ app.post('/api/cin/validate', async (req, res) => {
         status: 'UNVERIFIED',
         gate: 'HOLD',
         reason: 'SESSION_STORE_UNAVAILABLE'
+      });
+    }
+
+    if (isAuditFailure(error)) {
+      logger.error('validation escalated because audit evidence failed', error, { transactionId, auditId });
+      return res.status(409).json({
+        status: 'UNVERIFIED',
+        gate: 'ESCALATE',
+        reason: 'AUDIT_EVIDENCE_UNAVAILABLE'
       });
     }
 
