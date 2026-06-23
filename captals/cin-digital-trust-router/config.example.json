@@ -1,0 +1,13 @@
+{
+  "node_env": "development",
+  "port": 3001,
+  "trust_router_mode": "sandbox",
+  "redis_url": "redis://localhost:6379",
+  "audit_ledger_path": "./audit/events.jsonl",
+  "trusted_issuer_states": ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"],
+  "oidc": {
+    "issuer_url": "",
+    "client_id": "",
+    "redirect_uri": "http://localhost:3001/api/oidc/callback"
+  }
+}
