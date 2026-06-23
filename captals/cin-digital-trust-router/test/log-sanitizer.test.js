@@ -25,6 +25,8 @@ test('blocks sensitive identifier patterns and fields in audit payloads', () => 
   assert.throws(() => assertSafeAuditPayload({ cpf: 'opaque-value' }), /SENSITIVE_FIELD_BLOCKED/);
 });
 
-test('allows storage-safe audit payload', () => {
-  assert.doesNotThrow(() => assertSafeAuditPayload({ audit_token_hash: 'a'.repeat(64), status: 'UNVERIFIED', gate: 'HOLD' }));
+test('allows cryptographic hashes and storage-safe audit payloads', () => {
+  const hashWithNumericRun = 'a12345678901b'.padEnd(64, 'c');
+  assert.doesNotThrow(() => assertNoCpfPattern({ audit_token_hash: hashWithNumericRun }));
+  assert.doesNotThrow(() => assertSafeAuditPayload({ audit_token_hash: hashWithNumericRun, status: 'UNVERIFIED', gate: 'HOLD' }));
 });
