@@ -9,16 +9,33 @@ services:
       REDIS_URL: redis://redis:6379
       AUDIT_LEDGER_PATH: /app/audit/events.jsonl
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3001:3001"
     volumes:
       - cin_audit:/app/audit
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
 
   redis:
     image: redis:7-alpine
     container_name: captals-cin-redis
+    read_only: true
+    tmpfs:
+      - /data
+      - /tmp
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
 
 volumes:
