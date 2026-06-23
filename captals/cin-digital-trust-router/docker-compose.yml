@@ -1,0 +1,25 @@
+services:
+  cin-router:
+    build: .
+    container_name: captals-cin-digital-trust-router
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      TRUST_ROUTER_MODE: sandbox
+      REDIS_URL: redis://redis:6379
+      AUDIT_LEDGER_PATH: /app/audit/events.jsonl
+    ports:
+      - "3001:3001"
+    volumes:
+      - cin_audit:/app/audit
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: captals-cin-redis
+    restart: unless-stopped
+
+volumes:
+  cin_audit:
