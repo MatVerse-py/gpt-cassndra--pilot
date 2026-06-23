@@ -1,0 +1,31 @@
+{
+  "policy": "cin-digital-trust-router.allowed.v1",
+  "allowed_operations": [
+    "validate_cpf_format_in_memory",
+    "create_ephemeral_session_salt",
+    "consume_session_salt_once",
+    "generate_audit_token_hash",
+    "validate_issuer_state",
+    "write_sanitized_audit_event",
+    "return_trust_response",
+    "render_sandbox_wallet_demo"
+  ],
+  "allowed_storage_fields": [
+    "audit_id",
+    "transaction_id",
+    "audit_token_hash",
+    "status",
+    "issuer",
+    "verification",
+    "created_at",
+    "schema_version",
+    "event_hash"
+  ],
+  "privacy_invariants": [
+    "no_raw_cpf_in_storage",
+    "no_raw_cpf_in_logs",
+    "no_raw_cpf_in_audit_events",
+    "session_salt_ttl_required",
+    "session_salt_one_time_use_required"
+  ]
+}
