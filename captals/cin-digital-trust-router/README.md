@@ -2,7 +2,7 @@
 
 Infraestrutura segura para validação federada de CIN/identidade digital no escopo Captals.
 
-Este projeto **não emite**, **não gera** e **não simula documento oficial**. Ele opera como camada de confiança: valida formato, sessão, QR/OIDC autorizado, emissor, assinatura/status quando houver conector oficial e registra evidência sem armazenar CPF bruto.
+Este projeto **não emite**, **não gera** e **não simula documento oficial**. Ele opera como camada de confiança: valida formato, sessão, QR/OIDC autorizado, emissor, assinatura/status quando houver conector oficial e registra evidência sem armazenar identificador civil bruto.
 
 ## Função correta
 
@@ -24,7 +24,7 @@ Cidadão / Wallet / QR / OIDC
 - Ledger auditável sem coluna/campo `cpf`.
 - Schemas JSON para resposta de confiança e evento de auditoria.
 - Sandbox frontend demonstrativo.
-- CI com testes e scanner de termos proibidos.
+- Testes unitários e CI template.
 
 ## Escopo bloqueado
 
@@ -39,7 +39,6 @@ Cidadão / Wallet / QR / OIDC
 
 ```bash
 cd captals/cin-digital-trust-router
-cp .env.example .env
 npm install
 npm test
 npm start
@@ -57,12 +56,12 @@ API local:
 curl -X POST http://localhost:3001/api/session/start
 ```
 
-Use o `sessionId` retornado:
+Use o `sessionId` retornado e envie um identificador autorizado apenas em ambiente controlado:
 
 ```bash
 curl -X POST http://localhost:3001/api/cin/validate \
   -H 'Content-Type: application/json' \
-  -d '{"sessionId":"SESSION_ID_AQUI","cpf":"111.444.777-35","issuerState":"SP"}'
+  -d '{"sessionId":"SESSION_ID_AQUI","cpf":"IDENTIFICADOR_AUTORIZADO","issuerState":"SP"}'
 ```
 
 ## Resposta esperada
@@ -85,14 +84,15 @@ curl -X POST http://localhost:3001/api/cin/validate \
     "audit_id": "uuid",
     "transaction_id": "uuid",
     "audit_token_hash": "sha256hex",
-    "recorded": true
+    "recorded": true,
+    "event_hash": "sha256hex"
   }
 }
 ```
 
 ## Política de dados
 
-O CPF existe apenas durante a execução da função de validação/tokenização. O sistema retorna e armazena apenas hash de auditoria. O ledger rejeita qualquer evento que contenha padrão de CPF.
+O CPF existe apenas durante a execução da função de validação/tokenização. O sistema retorna e armazena apenas hash de auditoria. O ledger rejeita qualquer evento que contenha padrão de identificador civil bruto.
 
 ## Modelo Captals
 
