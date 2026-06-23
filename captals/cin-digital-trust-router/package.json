@@ -6,21 +6,20 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "check": "node --check src/index.js && node --check src/lib/session-manager.js && node --check src/lib/trust-engine.js && node --check src/lib/log-sanitizer.js && node --check src/lib/audit-store.js",
-    "test": "node --test"
+    "check": "node --check src/index.js && node --check src/lib/session-manager.js && node --check src/lib/trust-engine.js && node --check src/lib/log-sanitizer.js && node --check src/lib/audit-store.js && node --check scripts/verify-ledger.js",
+    "test": "node --test",
+    "verify:ledger": "node scripts/verify-ledger.js"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "ajv": "^8.17.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "helmet": "^8.0.0",
-    "ioredis": "^5.4.2",
-    "jose": "^5.9.6",
-    "pino": "^9.5.0"
+    "ajv": "8.17.1",
+    "dotenv": "16.4.7",
+    "express": "4.21.2",
+    "helmet": "8.0.0",
+    "ioredis": "5.4.2",
+    "pino": "9.5.0"
   },
   "devDependencies": {}
 }
