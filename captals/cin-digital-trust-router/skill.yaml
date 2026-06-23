@@ -1,0 +1,65 @@
+name: cin-digital-trust-router
+version: 1.0.0
+status: production-candidate
+scope: captals-trust-primitive
+description: >
+  Camada de confiança federada para validação CIN/wallet/QR/OIDC sem emissão de documento
+  e sem persistência de identificador civil bruto.
+
+capabilities:
+  - ephemeral_session_salt
+  - cpf_format_validation_in_memory
+  - audit_token_hashing
+  - blind_logging
+  - append_only_audit_ledger
+  - trust_response_schema
+  - sandbox_wallet_demo
+
+allowed:
+  - validate authorized input
+  - create trust response
+  - record sanitized evidence
+  - hold execution when official connector is unavailable
+
+blocked:
+  - issue official identity document
+  - generate usable government QR
+  - forge public authority signature
+  - bypass gov.br or biometric systems
+  - persist raw personal identifier
+
+gates:
+  PASS:
+    - authorized validation
+    - no sensitive identifier persisted
+    - schema valid
+  HOLD:
+    - official connector missing
+    - partial assurance
+  BLOCK:
+    - document generation attempt
+    - auth bypass attempt
+    - raw identifier persistence attempt
+  ESCALATE:
+    - legal ambiguity
+    - suspected fraud
+    - audit incident
+
+entrypoints:
+  http:
+    health: /health
+    session: /api/session/start
+    validate: /api/cin/validate
+
+artifacts:
+  - README.md
+  - package.json
+  - src/index.js
+  - src/lib/session-manager.js
+  - src/lib/trust-engine.js
+  - src/lib/log-sanitizer.js
+  - src/lib/audit-store.js
+  - schemas/cin-trust-response.schema.json
+  - schemas/audit-event.schema.json
+  - policies/allowed.policy.json
+  - policies/blocked.policy.json
