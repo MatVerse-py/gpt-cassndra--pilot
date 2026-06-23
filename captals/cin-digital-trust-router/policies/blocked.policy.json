@@ -1,0 +1,23 @@
+{
+  "policy": "cin-digital-trust-router.blocked.v1",
+  "blocked_operations": [
+    "generate_official_identity_document",
+    "issue_real_cin_or_rg",
+    "create_official_qr_code",
+    "forge_icp_brasil_signature",
+    "bypass_govbr_authentication",
+    "bypass_biometric_validation",
+    "simulate_state_issuer_authority",
+    "persist_raw_cpf",
+    "send_raw_cpf_to_queue",
+    "log_raw_cpf",
+    "store_raw_cpf_in_audit_ledger"
+  ],
+  "gate_result": {
+    "attempted_document_generation": "BLOCK",
+    "attempted_signature_forgery": "BLOCK",
+    "attempted_auth_bypass": "BLOCK",
+    "official_connector_missing": "HOLD",
+    "legal_ambiguity": "ESCALATE"
+  }
+}
