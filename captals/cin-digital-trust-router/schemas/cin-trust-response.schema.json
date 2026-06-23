@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matverse.local/schemas/cin-trust-response.schema.json",
+  "title": "CINTrustResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "issuer", "verification", "audit"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["VALID", "INVALID", "EXPIRED", "REVOKED", "HOLD", "BLOCK", "ESCALATE"]
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["country", "state_code", "agency_id"],
+      "properties": {
+        "country": { "type": "string", "const": "BR" },
+        "state_code": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "agency_id": { "type": "string", "minLength": 3 }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpf_format_valid", "issuer_trusted", "signature_valid", "source"],
+      "properties": {
+        "cpf_format_valid": { "type": "boolean" },
+        "issuer_trusted": { "type": "boolean" },
+        "signature_valid": { "type": "boolean" },
+        "source": { "type": "string", "enum": ["sandbox", "official-connector-required", "official"] }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audit_id", "transaction_id", "audit_token_hash", "recorded", "event_hash"],
+      "properties": {
+        "audit_id": { "type": "string", "format": "uuid" },
+        "transaction_id": { "type": "string", "format": "uuid" },
+        "audit_token_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "recorded": { "type": "boolean" },
+        "event_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  }
+}
