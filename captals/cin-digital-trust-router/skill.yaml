@@ -1,17 +1,18 @@
 name: cin-digital-trust-router
 version: 1.0.0
-status: production-candidate
+status: sandbox-hardened
 scope: captals-trust-primitive
 description: >
-  Camada de confiança federada para validação CIN/wallet/QR/OIDC sem emissão de documento
-  e sem persistência de identificador civil bruto.
+  Camada de confiança para validação autorizada com privacidade, ledger encadeado e replay.
+  Não emite documento e não afirma assurance oficial sem conector autorizado.
 
 capabilities:
   - ephemeral_session_salt
+  - atomic_one_time_salt_consumption
   - cpf_format_validation_in_memory
   - audit_token_hashing
   - blind_logging
-  - append_only_audit_ledger
+  - tamper_evident_audit_ledger
   - trust_response_schema
   - sandbox_wallet_demo
 
@@ -19,7 +20,7 @@ allowed:
   - validate authorized input
   - create trust response
   - record sanitized evidence
-  - hold execution when official connector is unavailable
+  - hold execution when official assurance is unavailable
 
 blocked:
   - issue official identity document
@@ -30,16 +31,20 @@ blocked:
 
 gates:
   PASS:
-    - authorized validation
+    - official connector authorized
+    - signature and certificate chain verified
+    - issuer and status confirmed
     - no sensitive identifier persisted
-    - schema valid
+    - schema and ledger evidence valid
   HOLD:
+    - sandbox execution
     - official connector missing
-    - partial assurance
+    - partial or unavailable assurance
   BLOCK:
     - document generation attempt
     - auth bypass attempt
     - raw identifier persistence attempt
+    - untrusted issuer
   ESCALATE:
     - legal ambiguity
     - suspected fraud
@@ -48,12 +53,16 @@ gates:
 entrypoints:
   http:
     health: /health
+    demo: /demo/
     session: /api/session/start
     validate: /api/cin/validate
 
 artifacts:
   - README.md
   - package.json
+  - Dockerfile
+  - docker-compose.yml
+  - scripts/verify-ledger.js
   - src/index.js
   - src/lib/session-manager.js
   - src/lib/trust-engine.js
